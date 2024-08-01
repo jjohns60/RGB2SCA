@@ -134,14 +134,22 @@ if ischar(RGB)
 
         %get the EPSG code from the user, as it is not included in the
         %MapCellsReference object
-        prompt = {strcat("Enter EPSG code for ",REF.ProjectedCRS.Name)};
-        dlgTitle = 'User Input';
-        fieldsize = [1 45];
-        EPSG = inputdlg(prompt,dlgTitle,fieldsize);
-        EPSG = str2double(EPSG{:});
+        try
+            EPSGcodeName = REF.ProjectedCRS.Name;
+            prompt = {strcat("Enter EPSG code for ",EPSGcodeName)};
+            dlgTitle = 'User Input';
+            fieldsize = [1 45];
+            EPSG = inputdlg(prompt,dlgTitle,fieldsize);
+            EPSG = str2double(EPSG{:});
+            isGeographic = 0;
         if isnan(EPSG)
             error('Invalid EPSG code')
         end
+        %if is in geographic coordinates, will save with REF object
+        catch
+            isGeographic = 1;
+        end
+        
         
     catch
         %read in as normal image
@@ -419,7 +427,11 @@ SCA(mask) = 255; %assign 255 to invalid/unclassified areas
 %save the SCA map as a georeferenced or un-georeferenced image, depending
 %on input type
 if exist("REF","var")
-    geotiffwrite([RGB_file(1:end-4) '_SCA.tif'],SCA,REF,"CoordRefSysCode",EPSG);
+    if isGeographic == 1
+        geotiffwrite([RGB_file(1:end-4) '_SCA.tif'],SCA,REF);
+    elseif isGeographic == 0
+        geotiffwrite([RGB_file(1:end-4) '_SCA.tif'],SCA,REF,"CoordRefSysCode",EPSG);
+    end
 else
     imwrite(SCA,[RGB_file(1:end-4) '_SCA.tif']);
 end
