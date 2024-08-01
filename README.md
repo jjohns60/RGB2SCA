@@ -3,7 +3,7 @@ These MATLAB scripts allow for snow cover maps to be produced interactively from
 
 Snow has high reflectance across the full visible portion of the electromagnetic spectrum, but it is highest in blue wavelengths (450 – 490 nm) and comparatively lowest in red wavelengths (590 – 650 nm, Dozier 1989). Because of this, blue band thresholding has been effective for delineating SCA (Thaler et al., 2023) as well as band differences between color channels. Testing of various band ratios, band differences, and single-band thresholds at multiple New Hampshire, U.S.A study sites concluded that the normalized difference between the blue and red bands (blue – red, BRd) was shown to most effectively delineate both shaded and unshaded snow. The magnitude of pixel intensity was also considered to ensure that bright white regions, like snow, were also captured.
 
-Binary SCA maps are produced by optimizing thresholds of combined pixel intensity and the difference between the blue and red color channels. The processing workflow to achieve this is as follows:
+##Binary SCA maps are produced by optimizing thresholds of combined pixel intensity and the difference between the blue and red color channels. The processing workflow to achieve this is as follows:
 
 (1) User inputs path to an image (e.g., RGB orthomosaic)
 
