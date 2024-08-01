@@ -9,7 +9,7 @@ else
     error('Unsupported image datatype')
 end
 
-%prepare guidata struct
+%prepare guidata struct 
 h=struct;
 h.f=figure("Position",[100 100 900 900]);clf(h.f)%open a clean figure
 h.ax=axes('Parent',h.f,...
