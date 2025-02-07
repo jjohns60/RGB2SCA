@@ -92,7 +92,10 @@ function [SCA,T,w_opt,SCM_thresh_opt] = convertRGB2SCA(RGB,datavis,step)
 % 5) the function requires two additional non-built in dependencies: 
 %    (1) sliderClassifySCA and (2) F1score. These must also be added to the
 %    user's path to use the convertRGB2SCA function
-
+%
+% 6) program is memory intensive, and may require sub-setting for large 
+%    images (generally >20,000 x 20,000). However, this is computer/MATLAB 
+%    settings dependent
 
 %{
 %use for testing
@@ -124,7 +127,7 @@ disp('Loading imagery...')
 
 %determine if is path to a georeferenced image, non-georeferenced image. 
 % If not, is considered a numeric matrix input
-if ischar(RGB)
+if ischar(RGB) | isstring(RGB)
     %input is a path to file
     RGB_file = RGB;
 
@@ -173,9 +176,9 @@ end
 
 %determine masked areas (dark or as defined in image alpha band)
 if size(RGB,3) == 4
-    mask = (RGB(:,:,4) == 0);
+    mask = RGB(:,:,4) == 0;
 else 
-    mask = zeros(size(RGB(:,:,1),[1 2])) ~= 0;
+    mask = zeros(size(RGB(:,:,1),[1 2]),'logical') ~= 0;
 end    
 
 %display progress
